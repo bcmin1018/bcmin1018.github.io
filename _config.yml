@@ -255,7 +255,7 @@ whitelist:
 #     tag: /tags/:name/
 category_dir: categories/
 tag_dir: tag/
-categories: [data_science]
+categories: [deeplearning]
 
 
 # HTML Compression
