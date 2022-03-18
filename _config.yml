@@ -100,6 +100,8 @@ analytics:
 # Site Author
 author:
   name             : "BradBox"
+  avatar           : "/assets/avatar.jpg"
+  bio              : "연구하는 직무로 전향 준비!!"
   location         : "Korea"
   email            : #"bcmin1018@gmail.com"
   links:
