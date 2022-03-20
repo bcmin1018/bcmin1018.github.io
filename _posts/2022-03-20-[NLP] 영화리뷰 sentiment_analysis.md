@@ -1,5 +1,13 @@
+---
+layout: single
+title: "[NLP] Movie_Review_Sentiment_Analysis with bert"
+projects: NLP
+tag: [pytorch, nlp, deeplearning]
+toc: true
+---
+
 # 영화 리뷰 감성 분석
-Bert를 활용하여 영화 리뷰를 긍정 또는 부정으로 분류하는 프로젝트.
+Bert를 활용하여 영화 리뷰를 긍정 또는 부정으로 분류하는 프로젝트. Bert 모델은 "bert-base-multilingual-cased" 를 사용했다.
 
 데이터셋 출처: https://dacon.io/competitions/official/235864/data
 
@@ -682,7 +690,7 @@ plt.show()
     
 
 
-
+## 5. 샘플 댓글로 테스트
 ```python
 def Sentiment_Analysis(text):
   tokenizer = BertTokenizer.from_pretrained("bert-base-multilingual-cased")
@@ -716,7 +724,7 @@ def Sentiment_Analysis(text):
 review = "시간 때우기 좋은 영화 지루함"
 ```
 
-
+결과가 잘 나오는 것을 확인할 수 있다.
 ```python
 result = Sentiment_Analysis(review)
 print(result)
@@ -725,6 +733,7 @@ print(result)
     negative
     
 
+## 6. 테스트 데이터 (제출)
 
 ```python
 testDataset = TESTDataset(test['document'])
