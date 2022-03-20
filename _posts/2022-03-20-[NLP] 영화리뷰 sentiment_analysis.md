@@ -1,4 +1,5 @@
 ---
+permalink: /projects/
 layout: single
 title: "[NLP] Movie_Review_Sentiment_Analysis with bert"
 projects: NLP
@@ -76,7 +77,7 @@ print("valid row : {}".format(len(valid_data)))
     valid row : 1000
     
 
-## Setting
+## 2. Setting
 ```python
 MAX_LEN = 60
 BATCH_SIZE = 16

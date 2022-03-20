@@ -1,4 +1,5 @@
 ---
+permalink: /projects/
 layout: single
 title: "[NLP] NEWS_Classification with roberta-large bert"
 projects: NLP
