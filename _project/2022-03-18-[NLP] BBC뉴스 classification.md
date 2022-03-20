@@ -1,5 +1,5 @@
 ---
-permalink: /project/
+permalink: /projects/
 layout: single
 title: "[NLP]뉴스기사 카테코리 분류"
 projects: NLP

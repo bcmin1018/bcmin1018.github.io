@@ -1,5 +1,5 @@
 ---
-permalink: /project/
+permalink: /projects/
 layout: single
 title: "[NLP]영화 리뷰 감성 분석"
 projects: NLP
