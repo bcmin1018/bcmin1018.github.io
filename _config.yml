@@ -96,6 +96,12 @@ analytics:
     tracking_id          : "G-DZLBS8LRKL"
     anonymize_ip         : false # true, false (default)
 
+# Collections
+collections:
+  project:
+    output: true
+    permalink: /:collection/:path/
+
 
 # Site Author
 author:

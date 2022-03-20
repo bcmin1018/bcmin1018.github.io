@@ -1,7 +1,10 @@
 ---
 title: "Project"
-layout: projects
-permalink: /projects/
+layout: collection
+permalink: /project/
+collection: project
 author_profile: true
-sidebar_main: true
+entries_layout: grid
+classes: wide
+# sidebar_main: true
 ---

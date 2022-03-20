@@ -3,7 +3,7 @@ main:
   - title: "Introduce"
     url: /about/
   - title: "Project"
-    url: /projects/
+    url: /project/
   - title: "Blog"
     url: /blogs/ 
   - title: "Category"
