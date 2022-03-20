@@ -6,7 +6,7 @@ tag: [pytorch, nlp, deeplearning]
 toc: true
 ---
 
-# NLP 기술을 사용하여 NEWS 기사 분류기를 만드는 프로젝트
+# NEWS 기사 분류
 bert 모델로는 "klue/roberta-large"를 사용하였으며 텍스트 전처리는 따로 진행하지 않았다.
 
 사용언어: pytorch
@@ -55,8 +55,8 @@ warnings.filterwarnings(action='ignore')
 DIR = '/content/drive/MyDrive/project/Classification/BBC_NEWS/data/'
 ```
 
-## 데이터 전처리
-### txt를 dataframe 형태로 변환
+## 2. 데이터 전처리
+### 2.1 txt를 dataframe 형태로 변환
 데이터가 txt 파일 형태로 저장되어 있어 하나씩 열어서 text 리스트에 append 하는 작업 진행.
 
 ```python
@@ -240,13 +240,9 @@ df2
     }
   </style>
 
-```python
-df2['label'].value_counts().plot(kind='bar')
-```
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x7f69b69c7cd0>
 
-### LabelEncoder() 함수를 사용하여 5개 레이블에 모두 번호로 레이블링 진행.
+### 2.2 LabelEncoder() 함수를 사용하여 5개 레이블에 모두 번호로 레이블링 진행.
 ```python
 le = LabelEncoder()
 df2['label'] = le.fit_transform(df2['label'])
@@ -386,7 +382,7 @@ df2.groupby(by=['label'], as_index=False).count()
   </div>
 
 
-## 딥러닝 Setting 값
+## 3. 딥러닝 Setting 값
 ```python
 MAX_LEN = 200
 BATCH_SIZE = 8
@@ -394,7 +390,7 @@ LEARNING_RATE = 2e-5
 EPOCH = 5
 ```
 
-## Bert를 위한 데이터셋
+## 4. Bert를 위한 데이터셋
 ```python
 class TRAINDataset(Dataset):
 
@@ -432,7 +428,7 @@ def calc_accuracy(X,Y):
     return train_acc
 ```
 
-## training
+## 5. training
 ```python
 def training(train_dataset,val_dataset, fold):
   best_acc = 0
@@ -496,7 +492,7 @@ def training(train_dataset,val_dataset, fold):
       torch.save(model, '/content/drive/MyDrive/project/Classification/BBC_NEWS/etc/model.pt')
 ```
 
-### traing 시작
+### 5.1 traing 시작
 ```python
 # 교차검증
 def main():
@@ -914,7 +910,7 @@ main()
 
     epoch 5 valid acc 0.9665178571428571
     
-## 실제 뉴스기사로 모델 test
+## 6. 실제 뉴스기사로 모델 test
 실제 BBC 뉴스 사이트에서 tech 기사 일부를 발췌하여 input data를 만들었다. 
 
 ```python
