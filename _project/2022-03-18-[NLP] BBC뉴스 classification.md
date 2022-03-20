@@ -1,7 +1,7 @@
 ---
-permalink: /projects/
+permalink: /project/
 layout: single
-title: "[NLP] NEWS_Classification with roberta-large bert"
+title: "[NLP]뉴스기사 카테코리 분류"
 projects: NLP
 tag: [pytorch, nlp, deeplearning]
 toc: true

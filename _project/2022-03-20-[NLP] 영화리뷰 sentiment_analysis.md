@@ -1,7 +1,7 @@
 ---
-permalink: /projects/
+permalink: /project/
 layout: single
-title: "[NLP] Movie_Review_Sentiment_Analysis with bert"
+title: "[NLP]영화 리뷰 감성 분석"
 projects: NLP
 tag: [pytorch, nlp, deeplearning]
 toc: true
