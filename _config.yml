@@ -1,137 +1,97 @@
-# Welcome to Jekyll!
-#
-# This config file is meant for settings that affect your entire site, values
-# which you are expected to set up once and rarely need to edit after that.
-# For technical reasons, this file is *NOT* reloaded automatically when you use
-# `jekyll serve`. If you change this file, please restart the server process.
+# ==============================================================================
+# Minimal Mistakes — Remote Theme 방식
+# 테마 업데이트는 _config.yml의 remote_theme 버전 태그만 바꾸면 됨
+# ==============================================================================
 
-# Theme Settings
-#
-# Review documentation to determine if you should use `theme` or `remote_theme`
-# https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/#installing-the-theme
+remote_theme             : "mmistakes/minimal-mistakes@4.26.2"
+minimal_mistakes_skin    : "mint" # "default", "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
-# theme                  : "minimal-mistakes-jekyll"
-# remote_theme           : "mmistakes/minimal-mistakes"
-minimal_mistakes_skin    : "mint" #"default", "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
-
-# Site Settings
-title                    : "ALL FOR DATA SCIENCE"
-title_separator          : "|" 
-description              : "데이터 싸이언스 지식을 중심으로 T자형 사람이 되기 위해 컴퓨터의 여러 분야를 공부하고 있습니다."
+# ------------------------------------------------------------------------------
+# 사이트 정체성 (TODO: 사용자가 직접 채워주세요)
+# ------------------------------------------------------------------------------
+title                    : "TODO: 새 사이트 제목"
+title_separator          : "|"
+description              : "TODO: 사이트 한 줄 설명 — AI 엔지니어 Brad의 기술 블로그 등"
 url                      : "https://bcmin1018.github.io"
-baseurl                  : # the subpath of your site, e.g. "/blog"
-repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
-teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
-logo                     : # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
-masthead_title           : # overrides the website title displayed in the masthead, use " " for no title
-# breadcrumbs            : false # true, false (default)
+baseurl                  :
+repository               : "bcmin1018/bcmin1018.github.io"
+teaser                   :
+logo                     :
+masthead_title           : " "
 words_per_minute         : 200
+locale                   : "ko-KR"
+
+# ------------------------------------------------------------------------------
+# 댓글: giscus (GitHub Discussions 기반)
+# 셋업: https://giscus.app 에서 repo 등록 후 받은 값 채우기
+# 사전 조건: GitHub repo Settings → Discussions 활성화 + giscus app 설치
+# ------------------------------------------------------------------------------
 comments:
-  provider               : "disqus" # false (default), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "giscus", "custom"
-  disqus:
-    shortname            : "bcmin1018" # https://help.disqus.com/customer/portal/articles/466208-what-s-a-shortname-
-  discourse:
-    server               : # https://meta.discourse.org/t/embedding-discourse-comments-via-javascript/31963 , e.g.: meta.discourse.org
-  facebook:
-    # https://developers.facebook.com/docs/plugins/comments
-    appid                :
-    num_posts            : # 5 (default)
-    colorscheme          : # "light" (default), "dark"
-  utterances:
-    theme                : # "github-light" (default), "github-dark"
-    issue_term           : # "pathname" (default)
+  provider               : "giscus"
   giscus:
-    repo_id              : # Shown during giscus setup at https://giscus.app
-    category_name        : # Full text name of the category
-    category_id          : # Shown during giscus setup at https://giscus.app
-    discussion_term      : # "pathname" (default), "url", "title", "og:title"
-    reactions_enabled    : # '1' for enabled (default), '0' for disabled
-    theme                : # "light" (default), "dark", "dark_dimmed", "transparent_dark", "preferred_color_scheme"
-  staticman:
-    branch               : # "master"
-    endpoint             : # "https://{your Staticman v3 API}/v3/entry/github/"
-reCaptcha:
-  siteKey                :
-  secret                 :
-atom_feed:
-  path                   : # blank (default) uses feed.xml
-  hide                   : # true, false (default)
-search                   : # true, false (default)
-search_full_content      : # true, false (default)
-search_provider          : # lunr (default), algolia, google
-algolia:
-  application_id         : # YOUR_APPLICATION_ID
-  index_name             : # YOUR_INDEX_NAME
-  search_only_api_key    : # YOUR_SEARCH_ONLY_API_KEY
-  powered_by             : # true (default), false
-google:
-  search_engine_id       : # YOUR_SEARCH_ENGINE_ID
-  instant_search         : # false (default), true
-# SEO Related
+    repo_id              : "TODO: giscus.app에서 발급"
+    category_name        : "Comments"
+    category_id          : "TODO: giscus.app에서 발급"
+    discussion_term      : "pathname"
+    reactions_enabled    : '1'
+    theme                : "preferred_color_scheme"
+
+# ------------------------------------------------------------------------------
+# 검색
+# ------------------------------------------------------------------------------
+search                   : true
+search_full_content      : true
+search_provider          : lunr
+
+# ------------------------------------------------------------------------------
+# SEO (기존 등록 보존)
+# ------------------------------------------------------------------------------
 google_site_verification :
-bing_site_verification   :
 naver_site_verification  : "1c8b6dee558f047fe76e93c34172a395b1d65625"
-yandex_site_verification :
-baidu_site_verification  :
 
-# Social Sharing
-twitter:
-  username               :
-facebook:
-  username               :
-  app_id                 :
-  publisher              :
-og_image                 : # Open Graph/Twitter default site image
-# For specifying social profiles
-# - https://developers.google.com/structured-data/customize/social-profiles
-social:
-  type                   : # Person or Organization (defaults to Person)
-  name                   : # If the user or organization name differs from the site's name
-  links: # An array of links to social media profiles
-
-# Analytics
+# ------------------------------------------------------------------------------
+# Analytics (기존 보존)
+# ------------------------------------------------------------------------------
 analytics:
-  provider               : "google-gtag" # false (default), "google", "google-universal", "google-gtag", "custom"
+  provider               : "google-gtag"
   google:
     tracking_id          : "G-DZLBS8LRKL"
-    anonymize_ip         : false # true, false (default)
+    anonymize_ip         : false
 
-# Collections
-collections:
-  project:
-    output: true
-    permalink: /:collection/:path/
-
-
-# Site Author
+# ------------------------------------------------------------------------------
+# 작성자 프로필
+# ------------------------------------------------------------------------------
 author:
-  name             : "BradBox"
+  name             : "Brad Min"
   avatar           : "/assets/avatar.jpg"
-  bio              : "연구하는 직무로 전향 준비!!"
-  location         : "Korea"
-  email            : #"bcmin1018@gmail.com"
+  bio              : "TODO: 자기소개 — 예) AI 엔지니어. LLM·Agent·RAG에 관심."
+  location         : "Seoul, Korea"
+  email            :
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
       url: "mailto:bcmin1018@gmail.com"
-    - label: "Website"
-      icon: "fas fa-fw fa-link"
-      url: "https://bcmin1018.github.io/"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/bcmin1018/"
-    # - label: "Instagram"
-    #   icon: "fab fa-fw fa-instagram"
-    #   # url: "https://instagram.com/"
 
-# Site Footer
 footer:
   links:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/bcmin1018/"
 
-# Reading Files
+# ------------------------------------------------------------------------------
+# Collections — 프로젝트 페이지 별도 운영
+# ------------------------------------------------------------------------------
+collections:
+  project:
+    output: true
+    permalink: /:collection/:path/
+
+# ------------------------------------------------------------------------------
+# 파일 처리
+# ------------------------------------------------------------------------------
 include:
   - .htaccess
   - _pages
@@ -143,41 +103,27 @@ exclude:
   - .bundle
   - .jekyll-assets-cache
   - .sass-cache
-  - assets/js/plugins
-  - assets/js/_main.js
-  - assets/js/vendor
   - Capfile
-  - CHANGELOG
   - config
   - Gemfile
-  - Gruntfile.js
-  - gulpfile.js
-  - LICENSE
+  - Gemfile.lock
   - log
   - node_modules
-  - package.json
-  - package-lock.json
-  - Rakefile
-  - README
   - tmp
-  - /docs # ignore Minimal Mistakes /docs
-  - /test # ignore Minimal Mistakes /test
 keep_files:
   - .git
-  - .svn
 encoding: "utf-8"
 markdown_ext: "markdown,mkdown,mkdn,mkd,md"
 
-
-# Conversion
+# ------------------------------------------------------------------------------
+# 변환
+# ------------------------------------------------------------------------------
 markdown: kramdown
 highlighter: rouge
 lsi: false
 excerpt_separator: "\n\n"
 incremental: false
 
-
-# Markdown Processing
 kramdown:
   input: GFM
   hard_wrap: false
@@ -188,77 +134,60 @@ kramdown:
   smart_quotes: lsquo,rsquo,ldquo,rdquo
   enable_coderay: false
 
-
-# Sass/SCSS
 sass:
   sass_dir: _sass
-  style: compressed # https://sass-lang.com/documentation/file.SASS_REFERENCE.html#output_style
+  style: compressed
 
-
-# Outputting
+# ------------------------------------------------------------------------------
+# URL / 페이지네이션
+# ------------------------------------------------------------------------------
 permalink: /:categories/:title/
-paginate: 7 # amount of posts to show
+paginate: 7
 paginate_path: /page:num/
 timezone: Asia/Seoul
 
-
-# Plugins (previously gems:)
+# ------------------------------------------------------------------------------
+# 플러그인
+# ------------------------------------------------------------------------------
 plugins:
   - jekyll-paginate
   - jekyll-sitemap
   - jekyll-gist
   - jekyll-feed
   - jekyll-include-cache
+  - jekyll-remote-theme
 
-# mimic GitHub Pages with --safe
 whitelist:
   - jekyll-paginate
   - jekyll-sitemap
   - jekyll-gist
   - jekyll-feed
   - jekyll-include-cache
+  - jekyll-remote-theme
 
-
-# Archives
-#  Type
-#  - GitHub Pages compatible archive pages built with Liquid ~> type: liquid (default)
-#  - Jekyll Archives plugin archive pages ~> type: jekyll-archives
-#  Path (examples)
-#  - Archive page should exist at path when using Liquid method or you can
-#    expect broken links (especially with breadcrumbs enabled)
-#  - <base_path>/tags/my-awesome-tag/index.html ~> path: /tags/
-#  - <base_path>/categories/my-awesome-category/index.html ~> path: /categories/
-#  - <base_path>/my-awesome-category/index.html ~> path: /
+# ------------------------------------------------------------------------------
+# Archives (카테고리/태그 인덱스)
+# ------------------------------------------------------------------------------
 category_archive:
   type: liquid
   path: /categories/
 tag_archive:
   type: liquid
   path: /tags/
-# https://github.com/jekyll/jekyll-archives
-jekyll-archives:
-  enabled:
-    - categories
-    - tags
-  layouts:
-    category: archive-taxonomy
-    tag: archive-taxonomy
-  permalinks:
-    category: /categories/:name/
-    tag: /tags/:name/
 
-
-# HTML Compression
-# - https://jch.penibelst.de/
+# ------------------------------------------------------------------------------
+# HTML 압축
+# ------------------------------------------------------------------------------
 compress_html:
   clippings: all
   ignore:
     envs: development
 
-
-# Defaults
+# ------------------------------------------------------------------------------
+# 글 기본값
+# ------------------------------------------------------------------------------
 defaults:
-  # _posts
+  # 일반 글
   - scope:
       path: ""
       type: posts
@@ -266,6 +195,27 @@ defaults:
       layout: single
       author_profile: true
       read_time: true
-      comments:  true
+      comments: true
       share: true
       related: true
+      toc: true
+      toc_sticky: true
+  # 프로젝트 컬렉션
+  - scope:
+      path: ""
+      type: project
+    values:
+      layout: single
+      author_profile: true
+      share: true
+  # archive 카테고리 글 (2022년 이전 자료) — 댓글 비활성, related 비활성
+  - scope:
+      path: "_posts/archive"
+    values:
+      layout: single
+      author_profile: true
+      read_time: true
+      comments: false
+      share: true
+      related: false
+      classes: archive-post
