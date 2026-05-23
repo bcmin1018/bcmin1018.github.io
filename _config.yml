@@ -7,11 +7,11 @@ remote_theme             : "mmistakes/minimal-mistakes@4.26.2"
 minimal_mistakes_skin    : "mint" # "default", "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 # ------------------------------------------------------------------------------
-# 사이트 정체성 (TODO: 사용자가 직접 채워주세요)
+# 사이트 정체성
 # ------------------------------------------------------------------------------
-title                    : "TODO: 새 사이트 제목"
+title                    : "Compound"
 title_separator          : "|"
-description              : "TODO: 사이트 한 줄 설명 — AI 엔지니어 Brad의 기술 블로그 등"
+description              : "작은 도구가 복리로 쌓이는 곳. AI 엔지니어 Brad Min의 작업 노트."
 url                      : "https://bcmin1018.github.io"
 baseurl                  :
 repository               : "bcmin1018/bcmin1018.github.io"
@@ -22,16 +22,16 @@ words_per_minute         : 200
 locale                   : "ko-KR"
 
 # ------------------------------------------------------------------------------
-# 댓글: giscus (GitHub Discussions 기반)
-# 셋업: https://giscus.app 에서 repo 등록 후 받은 값 채우기
+# 댓글: 일단 비활성. giscus 셋업 완료 시 provider를 "giscus"로 바꾸고
+# repo_id/category_id를 채울 것 (셋업: https://giscus.app)
 # 사전 조건: GitHub repo Settings → Discussions 활성화 + giscus app 설치
 # ------------------------------------------------------------------------------
 comments:
-  provider               : "giscus"
+  provider               : false # → "giscus"로 변경하면 활성
   giscus:
-    repo_id              : "TODO: giscus.app에서 발급"
+    repo_id              : "" # giscus.app에서 발급
     category_name        : "Comments"
-    category_id          : "TODO: giscus.app에서 발급"
+    category_id          : "" # giscus.app에서 발급
     discussion_term      : "pathname"
     reactions_enabled    : '1'
     theme                : "preferred_color_scheme"
@@ -64,7 +64,7 @@ analytics:
 author:
   name             : "Brad Min"
   avatar           : "/assets/avatar.jpg"
-  bio              : "TODO: 자기소개 — 예) AI 엔지니어. LLM·Agent·RAG에 관심."
+  bio              : "복리처럼 쌓이는 도구를 만든다."
   location         : "Seoul, Korea"
   email            :
   links:
