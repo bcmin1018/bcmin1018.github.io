@@ -1,12 +1,14 @@
 <!-- mermaid 다이어그램 렌더링: ```mermaid 코드 블록이 있는 페이지에서만 로드 -->
 <script type="module">
-  if (document.querySelector('div.language-mermaid')) {
+  var mermaidBlocks = document.querySelectorAll('pre > code.language-mermaid, div.language-mermaid');
+  if (mermaidBlocks.length) {
     const { default: mermaid } = await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs');
-    document.querySelectorAll('div.language-mermaid').forEach(function (el) {
+    mermaidBlocks.forEach(function (el) {
+      var target = el.tagName === 'CODE' ? el.parentElement : el;
       var pre = document.createElement('pre');
       pre.className = 'mermaid';
       pre.textContent = el.textContent;
-      el.replaceWith(pre);
+      target.replaceWith(pre);
     });
     mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
     mermaid.run();
