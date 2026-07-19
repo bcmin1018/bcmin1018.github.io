@@ -29,6 +29,9 @@
     color: #3d4144;
     font-weight: 600;
   }
+  .page__meta-views {
+    margin-left: 0.75em;
+  }
 </style>
 <div id="visitor-stats">
   <span class="vs-pill"><i class="fas fa-fw fa-eye" aria-hidden="true"></i>Total <strong id="vs-total"></strong></span>
@@ -36,7 +39,8 @@
 </div>
 <script>
   (function () {
-    var base = 'https://bcmin1018.goatcounter.com/counter/TOTAL.json';
+    var counter = 'https://bcmin1018.goatcounter.com/counter/';
+    var base = counter + 'TOTAL.json';
     var today = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Seoul' });
 
     function getCount(url) {
@@ -63,5 +67,19 @@
         }
       })
       .catch(function () { /* 카운터 비활성/네트워크 오류 시 표시 생략 */ });
+
+    // 글 페이지: 제목 아래 메타(읽는 시간 옆)에 해당 글 조회수 표시
+    var readtime = document.querySelector('.page__meta .page__meta-readtime');
+    if (readtime) {
+      getCount(counter + encodeURIComponent(location.pathname) + '.json')
+        .then(function (n) {
+          var span = document.createElement('span');
+          span.className = 'page__meta-views';
+          span.innerHTML = '<i class="far fa-fw fa-eye" aria-hidden="true"></i> ' +
+            n.toLocaleString() + ' views';
+          readtime.insertAdjacentElement('afterend', span);
+        })
+        .catch(function () { /* 집계 전이거나 오류면 표시 생략 */ });
+    }
   })();
 </script>

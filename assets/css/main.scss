@@ -14,3 +14,20 @@ $right-sidebar-width-wide: 300px;
 @import "minimal-mistakes"; // main partials
 
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+// 본문 글자 크기 축소 (테마 기본: 16/18/20/22px → 15/16/17/18px)
+html {
+  font-size: 15px;
+
+  @include breakpoint($medium) {
+    font-size: 16px;
+  }
+
+  @include breakpoint($large) {
+    font-size: 17px;
+  }
+
+  @include breakpoint($x-large) {
+    font-size: 18px;
+  }
+}
