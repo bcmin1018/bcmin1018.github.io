@@ -85,8 +85,9 @@
       })
       .catch(function () { /* 카운터 비활성/네트워크 오류 시 표시 생략 */ });
 
-    // 글 페이지: 제목 아래 메타(읽는 시간 옆)에 해당 글 조회수 표시
-    var readtime = document.querySelector('.page__meta .page__meta-readtime');
+    // 글 상세 페이지에서만: 제목 아래 메타(읽는 시간 옆)에 해당 글 조회수 표시.
+    // article.page로 한정해 홈/아카이브 목록과 related 목록에는 붙지 않게 한다.
+    var readtime = document.querySelector('article.page .page__meta-readtime');
     if (readtime) {
       getCount(counter + encodeURIComponent(location.pathname) + '.json')
         .then(function (n) {
