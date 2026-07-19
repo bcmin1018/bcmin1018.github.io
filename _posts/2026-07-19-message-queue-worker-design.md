@@ -125,6 +125,29 @@ WHERE id = :job_id AND status = 'REQUESTED'   -- 아직 아무도 안 집은 경
 - 워커 A: `rowcount == 1` → "내가 찜했다" → 처리 진행
 - 워커 B: 조건 불일치로 `rowcount == 0` → 조용히 물러나고 메시지만 ack
 
+같은 잡이 두 워커에게 배달됐을 때의 전체 흐름은 이렇다. 두 워커 모두 정상 동작하고 있는데도 DB의 원자적 UPDATE가 심판 역할을 해서, 실제 처리(외부 API 호출)는 한 번만 일어난다.
+
+```mermaid
+sequenceDiagram
+    participant Q as 큐 (SQS)
+    participant A as 워커 A
+    participant B as 워커 B
+    participant DB as DB (jobs 테이블)
+
+    Note over Q: 잡 X가 중복 배달됨 (at-least-once)
+    Q->>A: 잡 X 배달
+    Q->>B: 잡 X 배달 (중복)
+    A->>DB: UPDATE ... WHERE status = 'REQUESTED'
+    DB-->>A: rowcount = 1 → 점유 성공
+    A->>DB: 즉시 COMMIT — "처리 중"을 공표
+    B->>DB: UPDATE ... WHERE status = 'REQUESTED'
+    DB-->>B: rowcount = 0 → 이미 점유됨
+    B->>Q: ack — 처리 없이 물러남
+    Note over A: 잡 처리 (외부 API 호출은 한 번만)
+    A->>DB: 결과 기록
+    A->>Q: ack — 큐에서 삭제
+```
+
 ```python
 claimed = await jobs.claim(job_id)   # 위의 원자적 UPDATE 실행
 if claimed is None:                  # 다른 워커가 이미 점유
