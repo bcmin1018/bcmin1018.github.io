@@ -66,9 +66,6 @@ for sig in (signal.SIGINT, signal.SIGTERM):
 
 while not stop.is_set():                                 # ③ 새 잡 안 받음
     ...
-finally:
-    sweeper.cancel()                                     # ④ 곁가지 정리
-    await asyncio.gather(sweeper, return_exceptions=True)
 ```
 
 핵심은 시그널 핸들러가 **팻말(`Event`)만 세우고 즉시 리턴**한다는 것이다. 핸들러 안에서 정리 작업을 하지 않고, 메인 루프가 자연스럽게 빠져나오면서 마무리하게 한다.
@@ -127,13 +124,14 @@ WHERE id = :job_id AND status = 'REQUESTED'   -- 아직 아무도 안 집은 경
 ```
 
 - 워커 A: `rowcount == 1` → "내가 찜했다" → 처리 진행
-- 워커 B: 조건 불일치로 `rowcount == 0` → 조용히 물러나고(SKIPPED) 메시지만 ack
+- 워커 B: 조건 불일치로 `rowcount == 0` → 조용히 물러나고 메시지만 ack
 
 ```python
-claimed = await self.jobs.claim(job_id, self.stale_processing_seconds)
-if claimed is None:
-    return ProcessOutcome.SKIPPED
-await self.uow.commit()  # 점유를 즉시 확정
+claimed = await jobs.claim(job_id)   # 위의 원자적 UPDATE 실행
+if claimed is None:                  # 다른 워커가 이미 점유
+    await queue.ack(message)         # 처리 없이 메시지만 제거하고 물러남
+    return
+await db.commit()                    # 점유를 즉시 확정
 ```
 
 **즉시 commit하는 이유**: 커밋 전의 UPDATE는 내 트랜잭션에서만 보이는 임시 변경이다. 잡 처리가 몇 분씩 걸리는 동안 커밋을 미루면 (1) 다른 워커가 같은 잡을 claim하려다 row lock에 걸려 몇 분간 대기하고, (2) 진행률 조회 API나 스위퍼가 여전히 REQUESTED 상태로 본다. 찜 도장을 찍자마자 커밋해서 "처리 중"임을 모두에게 공표해야 한다.
