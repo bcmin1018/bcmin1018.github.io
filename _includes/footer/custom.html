@@ -85,12 +85,14 @@
       })
       .catch(function () { /* 카운터 비활성/네트워크 오류 시 표시 생략 */ });
 
-    // 홈/아카이브 목록: 각 항목의 읽기 시간 옆에 해당 글의 조회수 표시
-    document.querySelectorAll('article.archive__item').forEach(function (item) {
-      var link = item.querySelector('.archive__item-title a');
-      var rt = item.querySelector('.page__meta-readtime');
-      if (!link || !rt) return;
-      getCount(counter + encodeURIComponent(new URL(link.href).pathname) + '.json')
+    // 읽기 시간 요소 옆에 해당 경로의 조회수를 붙인다.
+    // 집계가 아직 없는 글(404)은 0 views로 표시, 그 외 오류(네트워크 등)만 표시 생략.
+    function attachViews(rt, path) {
+      getCount(counter + encodeURIComponent(path) + '.json')
+        .catch(function (e) {
+          if (e.message === '404') return 0;
+          throw e;
+        })
         .then(function (n) {
           var span = document.createElement('span');
           span.className = 'page__meta-views';
@@ -98,22 +100,18 @@
             n.toLocaleString() + ' views';
           rt.insertAdjacentElement('afterend', span);
         })
-        .catch(function () { /* 아직 집계 없는 글(404)은 표시 생략 */ });
+        .catch(function () {});
+    }
+
+    // 홈/아카이브 목록: 각 항목에 해당 글의 조회수 표시
+    document.querySelectorAll('article.archive__item').forEach(function (item) {
+      var link = item.querySelector('.archive__item-title a');
+      var rt = item.querySelector('.page__meta-readtime');
+      if (link && rt) attachViews(rt, new URL(link.href).pathname);
     });
 
-    // 글 상세 페이지: 제목 아래 메타(읽는 시간 옆)에 해당 글 조회수 표시.
-    // article.page로 한정해 목록 항목과 겹치지 않게 한다.
+    // 글 상세 페이지: 제목 아래 메타에 조회수 표시 (article.page로 한정해 목록과 안 겹침)
     var readtime = document.querySelector('article.page .page__meta-readtime');
-    if (readtime) {
-      getCount(counter + encodeURIComponent(location.pathname) + '.json')
-        .then(function (n) {
-          var span = document.createElement('span');
-          span.className = 'page__meta-views';
-          span.innerHTML = '<i class="far fa-fw fa-eye" aria-hidden="true"></i> ' +
-            n.toLocaleString() + ' views';
-          readtime.insertAdjacentElement('afterend', span);
-        })
-        .catch(function () { /* 집계 전이거나 오류면 표시 생략 */ });
-    }
+    if (readtime) attachViews(readtime, location.pathname);
   })();
 </script>
