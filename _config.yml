@@ -187,6 +187,12 @@ compress_html:
 # 글 기본값
 # ------------------------------------------------------------------------------
 defaults:
+  # 모든 페이지 (홈, about, 아카이브 등) — 좌측 사이드바 네비게이션
+  - scope:
+      path: ""
+    values:
+      sidebar:
+        nav: "sidebar-main"
   # 일반 글
   - scope:
       path: ""
@@ -200,6 +206,8 @@ defaults:
       related: true
       toc: true
       toc_sticky: true
+      sidebar:
+        nav: "sidebar-main"
   # 프로젝트 컬렉션
   - scope:
       path: ""
@@ -208,6 +216,8 @@ defaults:
       layout: single
       author_profile: true
       share: true
+      sidebar:
+        nav: "sidebar-main"
   # archive 카테고리 글 (2022년 이전 자료) — 댓글 비활성, related 비활성
   - scope:
       path: "_posts/archive"
