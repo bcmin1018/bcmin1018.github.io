@@ -101,7 +101,7 @@ sqs.change_message_visibility(
 
 주의할 점: 이 API는 남은 시간에 **더하는** 게 아니라, **호출 시점부터 visibility timeout을 지정한 값으로 재설정**한다. "20초마다 60초로 재설정"이면 heartbeat가 살아 있는 한 lease는 만료되지 않는다.
 
-처리 결과가 나오면 `heartbeat.cancel()` 후 `await asyncio.gather(heartbeat, return_exceptions=True)`로 태스크를 정리하고, 잡 결과를 기록한 뒤 `queue.ack(...)`로 메시지를 큐에서 제거한다. 실패한 잡은 여러 번 재시도를 거치고, 그래도 실패하면 Failed로 기록한다.
+처리가 끝나면 heartbeat를 멈추고, **잡 결과를 기록한 뒤에** `queue.ack(...)`로 메시지를 큐에서 제거한다. 이 순서가 중요하다. ack는 "이 잡은 끝났으니 다시 배달하지 마라"는 선언이므로, 결과 기록까지 마친 다음에만 호출해야 한다. 결과를 기록하기 전에 ack부터 해버리면, 그 직후 워커가 죽었을 때 메시지는 큐에서 사라졌는데 결과는 어디에도 없는 — 즉 잡이 유실되는 — 상태가 된다. 실패한 잡은 여러 번 재시도를 거치고, 그래도 실패하면 Failed로 기록한다.
 
 ## 4. 멱등성 — DB 선착순 Claim
 
