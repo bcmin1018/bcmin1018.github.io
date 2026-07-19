@@ -2,8 +2,38 @@
 <script data-goatcounter="https://bcmin1018.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 
-<!-- 방문자 수 표시: 대시보드 설정에서 'allow using the visitor counter'가 켜져 있어야 함 -->
-<div id="visitor-stats" style="text-align: center; margin-top: 1rem; font-size: 0.75em; color: #898c8f;"></div>
+<!-- 방문자 수 표시: 대시보드 설정에서 'allow using the visitor counter'가 켜져 있어야 함.
+     JS가 카운트 로드 후 footer 맨 아래(copyright 다음)로 옮겨 왼쪽 정렬로 표시한다. -->
+<style>
+  #visitor-stats {
+    display: none;
+    margin-top: 0.75em;
+    text-align: left;
+  }
+  #visitor-stats .vs-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    margin-right: 0.4em;
+    padding: 0.3em 0.8em;
+    border: 1px solid #e0e4e6;
+    border-radius: 2em;
+    background: #f6f8f8;
+    font-size: 0.7em;
+    color: #6f777d;
+  }
+  #visitor-stats .vs-pill i {
+    color: #3fb0ac;
+  }
+  #visitor-stats .vs-pill strong {
+    color: #3d4144;
+    font-weight: 600;
+  }
+</style>
+<div id="visitor-stats">
+  <span class="vs-pill"><i class="fas fa-fw fa-eye" aria-hidden="true"></i>Total <strong id="vs-total"></strong></span>
+  <span class="vs-pill"><i class="fas fa-fw fa-calendar-day" aria-hidden="true"></i>Today <strong id="vs-today"></strong></span>
+</div>
 <script>
   (function () {
     var base = 'https://bcmin1018.goatcounter.com/counter/TOTAL.json';
@@ -15,10 +45,22 @@
         .then(function (d) { return parseInt(d.count.replace(/\D/g, ''), 10) || 0; });
     }
 
+    function show(counts) {
+      var stats = document.getElementById('visitor-stats');
+      document.getElementById('vs-total').textContent = counts[0].toLocaleString();
+      document.getElementById('vs-today').textContent = counts[1].toLocaleString();
+      var copyright = document.querySelector('.page__footer-copyright');
+      if (copyright) copyright.insertAdjacentElement('afterend', stats);
+      stats.style.display = 'block';
+    }
+
     Promise.all([getCount(base), getCount(base + '?start=' + today)])
       .then(function (counts) {
-        document.getElementById('visitor-stats').textContent =
-          'Total ' + counts[0].toLocaleString() + ' · Today ' + counts[1].toLocaleString();
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', function () { show(counts); });
+        } else {
+          show(counts);
+        }
       })
       .catch(function () { /* 카운터 비활성/네트워크 오류 시 표시 생략 */ });
   })();
