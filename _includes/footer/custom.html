@@ -1,8 +1,25 @@
-<!-- 방문자 카운터 (komarev.com) -->
-<div style="text-align: center; margin-top: 1rem;">
-  <img src="https://komarev.com/ghpvc/?username=bcmin1018&style=flat&color=79C83D&label=visits" alt="visits" />
-</div>
-
 <!-- GoatCounter 방문 통계 (https://bcmin1018.goatcounter.com) -->
 <script data-goatcounter="https://bcmin1018.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
+
+<!-- 방문자 수 표시: 대시보드 설정에서 'allow using the visitor counter'가 켜져 있어야 함 -->
+<div id="visitor-stats" style="text-align: center; margin-top: 1rem; font-size: 0.75em; color: #898c8f;"></div>
+<script>
+  (function () {
+    var base = 'https://bcmin1018.goatcounter.com/counter/TOTAL.json';
+    var today = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Seoul' });
+
+    function getCount(url) {
+      return fetch(url)
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(function (d) { return parseInt(d.count.replace(/\D/g, ''), 10) || 0; });
+    }
+
+    Promise.all([getCount(base), getCount(base + '?start=' + today)])
+      .then(function (counts) {
+        document.getElementById('visitor-stats').textContent =
+          'Total ' + counts[0].toLocaleString() + ' · Today ' + counts[1].toLocaleString();
+      })
+      .catch(function () { /* 카운터 비활성/네트워크 오류 시 표시 생략 */ });
+  })();
+</script>
