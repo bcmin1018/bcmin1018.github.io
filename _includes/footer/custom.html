@@ -85,8 +85,24 @@
       })
       .catch(function () { /* 카운터 비활성/네트워크 오류 시 표시 생략 */ });
 
-    // 글 상세 페이지에서만: 제목 아래 메타(읽는 시간 옆)에 해당 글 조회수 표시.
-    // article.page로 한정해 홈/아카이브 목록과 related 목록에는 붙지 않게 한다.
+    // 홈/아카이브 목록: 각 항목의 읽기 시간 옆에 해당 글의 조회수 표시
+    document.querySelectorAll('article.archive__item').forEach(function (item) {
+      var link = item.querySelector('.archive__item-title a');
+      var rt = item.querySelector('.page__meta-readtime');
+      if (!link || !rt) return;
+      getCount(counter + encodeURIComponent(new URL(link.href).pathname) + '.json')
+        .then(function (n) {
+          var span = document.createElement('span');
+          span.className = 'page__meta-views';
+          span.innerHTML = '<i class="far fa-fw fa-eye" aria-hidden="true"></i> ' +
+            n.toLocaleString() + ' views';
+          rt.insertAdjacentElement('afterend', span);
+        })
+        .catch(function () { /* 아직 집계 없는 글(404)은 표시 생략 */ });
+    });
+
+    // 글 상세 페이지: 제목 아래 메타(읽는 시간 옆)에 해당 글 조회수 표시.
+    // article.page로 한정해 목록 항목과 겹치지 않게 한다.
     var readtime = document.querySelector('article.page .page__meta-readtime');
     if (readtime) {
       getCount(counter + encodeURIComponent(location.pathname) + '.json')
