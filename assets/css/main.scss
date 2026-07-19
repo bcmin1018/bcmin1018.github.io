@@ -4,6 +4,12 @@
 
 @charset "utf-8";
 
+// 본문 폭 확장: 컨테이너 1280px → 1400px, 우측 사이드바(TOC) 예약 공간 축소
+$max-width: 1400px;
+$right-sidebar-width-narrow: 200px;
+$right-sidebar-width: 250px;
+$right-sidebar-width-wide: 300px;
+
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
 @import "minimal-mistakes"; // main partials
 
