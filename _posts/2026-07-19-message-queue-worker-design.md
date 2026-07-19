@@ -41,14 +41,16 @@ while not stop.is_set():
 - **`max_messages`**: "이만큼 모일 때까지 기다려라"가 **아니라** 한 번에 담아 올 상한이다. 메시지가 1개라도 생기면 그 시점 것만 담아 즉시 반환한다. `max_messages=1`은 잡을 쟁여두지 않고 하나씩 가져간다는 뜻으로, 경쟁 소비자 구조와 맞는 선택이다.
 - **visibility timeout**: 큐에서 poll하면 이 시간 동안 해당 메시지가 다른 워커에게 보이지 않는다. "대체로 한 워커만 잡을 받게 하는" **1차 방어**다. (완전한 방어가 아닌 이유는 4번에서 다룬다.)
 
-```
-프로듀서 ──▶ [ 큐 ]  잡 A · B · C
-              │
-              ├─ poll ──▶ 워커 1 (잡 A 처리 중)  ※ A는 visibility timeout 동안 숨김
-              ├─ poll ──▶ 워커 2 (잡 B 처리 중)  ※ B도 마찬가지
-              └─ 잡 C는 대기 ──▶ 먼저 한가해지는 워커가 가져감
+빈 워커가 큐에서 바로 잡을 가져가고, poll된 잡은 visibility timeout 동안 다른 워커에게 보이지 않는다(점선). 처리가 끝나면 ack로 큐에서 삭제된다.
 
-워커 1 처리 완료 ──▶ ack ──▶ 잡 A를 큐에서 삭제
+```mermaid
+flowchart LR
+    P[프로듀서 — 잡 A·B·C 등록] --> Q[(SQS 큐)]
+    Q -->|poll → 잡 A| W1[워커 1 — 잡 A 처리 중]
+    Q -->|poll → 잡 B| W2[워커 2 — 잡 B 처리 중]
+    Q -->|잡 C 대기 → 먼저 비는 워커가 가져감| W3[워커 3 — 유휴]
+    W1 -->|처리 완료 → ack, 큐에서 삭제| Q
+    Q -.->|visibility timeout — 잡 A·B는 다른 워커에게 안 보임| Q
 ```
 
 "visibility timeout"은 SQS 용어지만 유사 개념은 다른 브로커에도 있다. Redis Streams는 consumer group의 pending 목록과 `XCLAIM`/`XAUTOCLAIM`으로, RabbitMQ는 unacked 메시지의 재전달로 같은 역할을 한다. 단순 Redis 리스트(LPUSH/RPOP)에는 없으므로 직접 구현해야 한다 — 큐를 Redis 리스트로 시작하려 한다면 이 지점을 먼저 고민해보길 권한다.
