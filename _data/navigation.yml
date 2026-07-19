@@ -1,18 +1,13 @@
-# main links
-main:
+# masthead 상단 메뉴 — 좌측 사이드바(sidebar-main)로 이동해 비움
+main: []
+
+# 좌측 사이드바 메뉴 (_includes/nav_list 가 렌더링, Category 목록은 자동 생성)
+sidebar-main:
   - title: "Introduce"
     url: /about/
   - title: "Project"
     url: /project/
   - title: "Blog"
-    url: /blogs/ 
-  - title: "Category"
-    url: /categories/
+    url: /blogs/
   - title: "Tag"
-    url: /tags/    
-#   - title: "Sample Posts"
-  #   url: /year-archive/
-  # - title: "Sample Collections"
-  #   url: /collection-archive/
-  # - title: "Sitemap"
-  #   url: /sitemap/
+    url: /tags/
