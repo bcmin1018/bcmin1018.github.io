@@ -98,6 +98,7 @@ include:
 exclude:
   - "*.sublime-project"
   - "*.sublime-workspace"
+  - CLAUDE.md
   - vendor
   - .asset-cache
   - .bundle
