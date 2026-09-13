@@ -62,6 +62,7 @@ header:
 | `ai-tech/agent/`  | `[ai-tech, agent]` |
 | `ai-tech/rag/`    | `[ai-tech, rag]`   |
 | `ai-tech/training/` | `[ai-tech, training]` |
+| `algorithms/system-design/` | `[algorithms, system-design]` |
 | `algorithms/`     | `[algorithms]`     |
 | `infra/`          | `[infra]`          |
 | `projects/`       | `[projects]`       |
