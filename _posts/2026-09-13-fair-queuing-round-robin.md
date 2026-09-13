@@ -1,5 +1,5 @@
 ---
-title: "공정 큐잉 — 큐 하나를 독점하는 요청을 라운드로빈으로 막기"
+title: "한 사용자가 큐를 독점할 때 — 공정 큐잉과 라운드로빈"
 date: 2026-09-13
 categories: [algorithms, system-design]
 tags: [fair-queuing, round-robin, noisy-neighbor, scheduling, message-queue, redis-streams]
