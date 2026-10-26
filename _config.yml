@@ -22,19 +22,18 @@ words_per_minute         : 200
 locale                   : "ko-KR"
 
 # ------------------------------------------------------------------------------
-# 댓글: 일단 비활성. giscus 셋업 완료 시 provider를 "giscus"로 바꾸고
-# repo_id/category_id를 채울 것 (셋업: https://giscus.app)
-# 사전 조건: GitHub repo Settings → Discussions 활성화 + giscus app 설치
+# 댓글: giscus (GitHub Discussions의 Announcements 카테고리에 저장)
+# ID 재발급·변경: https://giscus.app
 # ------------------------------------------------------------------------------
 comments:
-  provider               : false # → "giscus"로 변경하면 활성
+  provider               : "giscus"
   giscus:
-    repo_id              : "" # giscus.app에서 발급
-    category_name        : "Comments"
-    category_id          : "" # giscus.app에서 발급
+    repo_id              : "R_kgDOG-Ltgw"
+    category_name        : "Announcements"
+    category_id          : "DIC_kwDOG-Ltg84DJppM"
     discussion_term      : "pathname"
     reactions_enabled    : '1'
-    theme                : "preferred_color_scheme"
+    theme                : "light" # 스킨(mint)이 라이트 전용
 
 # ------------------------------------------------------------------------------
 # 검색
