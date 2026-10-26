@@ -1,5 +1,5 @@
 ---
-title: "LLM 에이전트 SQL 툴에서 DB 커넥션 풀 관리하기 — 의존성 주입으로 설계하기"
+title: "LLM 에이전트 툴에서 DB 커넥션 풀 관리하기 — 의존성 주입으로 설계하기"
 date: 2026-10-26
 categories: [ai-tech, agent]
 tags: [llm-agent, langchain, tool-calling, connection-pool, dependency-injection, fastapi]
