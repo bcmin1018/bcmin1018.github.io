@@ -148,4 +148,4 @@ bundle exec jekyll serve --livereload
 - **`master` 브랜치에 직접 푸시 금지** — 변경은 항상 별도 브랜치 → 검증 → 머지.
 - **URL은 한 번 정해지면 불변** — `categories`와 슬러그(파일명) 신중히 결정.
 - **위키 raw 파일을 블로그에 직접 노출 금지** — 저작권·미정제 정보 위험.
-- **giscus 댓글 설정**: `_config.yml`의 `comments.giscus.repo_id` 등이 `TODO`로 남아있음. 사용자가 giscus.app에서 값을 받아 채워야 댓글 작동.
+- **giscus 댓글**: 활성화됨. 댓글은 블로그 레포 Discussions의 `Announcements` 카테고리에 페이지 경로(pathname) 기준으로 쌓인다. `archive/` 글은 `defaults`에서 댓글 off.
