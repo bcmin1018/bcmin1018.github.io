@@ -1,9 +1,9 @@
 ---
-title: "에이전트 툴에 DB를 어떻게 넣을까 — 수명으로 나누는 의존성 주입"
+title: "LLM 에이전트 SQL 툴에서 DB 커넥션 풀 관리하기 — 의존성 주입으로 설계하기"
 date: 2026-10-26
 categories: [ai-tech, agent]
-tags: [agent, tool-calling, dependency-injection, connection-pool, llm]
-excerpt: "SQL을 실행하는 에이전트 툴은 DB를 어디서 받아야 할까. 전역 engine, 요청마다 생성, 에이전트 state 중 어느 것도 답이 아니었고, 객체를 수명별로 나눠 놓을 자리를 정하는 것으로 정리됐다."
+tags: [llm-agent, langchain, tool-calling, connection-pool, dependency-injection, fastapi]
+excerpt: "LLM 에이전트의 SQL 툴에 DB를 어떻게 연결할까. 전역 engine, 호출마다 생성, 에이전트 state 저장이 왜 문제인지 짚고, 커넥션 풀과 의존성 주입(LangChain ToolRuntime, FastAPI lifespan)으로 정리한 설계를 공유한다."
 toc: true
 toc_sticky: true
 ---
