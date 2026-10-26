@@ -57,7 +57,11 @@ Java의 HikariCP, Go의 `database/sql`, Node의 `pg.Pool`도 구조는 같다. �
 
 이렇게 보면 "툴 호출마다 클라이언트를 만든다"는 선택지는 바로 탈락한다. 클라이언트를 만들 때마다 풀이 새로 생기기 때문이다. 접속을 재사용하려고 풀을 쓰는 건데, 풀을 매번 새로 만들면 의미가 없다.
 
+{% include figure image_path="/assets/images/posts/2026-10-26-agent-di-pool.png" alt="왼쪽: 툴 호출 1, 2, 3이 각각 새 풀을 만들어 커넥션 하나로 쿼리한 뒤 폐기한다. 오른쪽: 앱에 하나뿐인 DB 풀에 커넥션 4개가 있고, 호출 1은 conn 1을 빌려 쿼리 중이며 호출 2는 conn 3을 막 반납했다." caption="호출마다 클라이언트를 만들면 풀도 매번 새로 생긴다. 풀을 하나만 두면 커넥션을 빌려 쓰고 돌려줄 수 있다." %}
+
 반대 방향의 실수도 있다. **커넥션 하나를 빌려서 에이전트 실행 내내 들고 있는 것**이다. 에이전트 실행 시간의 대부분은 LLM이 응답을 생성하는 시간이다. 그동안 커넥션은 아무 일도 하지 않으면서 풀의 한 자리를 차지한다. 동시 요청이 풀 크기를 넘으면 뒤의 요청은 LLM이 생각을 마칠 때까지 커넥션을 기다려야 한다. 커넥션은 **툴이 실제로 쿼리를 실행하는 동안만** 빌려야 한다.
+
+{% include figure image_path="/assets/images/posts/2026-10-26-agent-di-hold.png" alt="에이전트 실행은 LLM 추론, SQL, LLM 추론, SQL, 답변 생성 순으로 진행된다. 왼쪽은 커넥션을 처음부터 끝까지 점유하고, 오른쪽은 SQL 구간에서만 커넥션을 빌리고 나머지 구간에는 풀에 둔다." caption="에이전트 실행 시간의 대부분은 LLM 추론이다. 커넥션은 SQL 구간에서만 빌린다." %}
 
 ## 고민 3. 에이전트 state에 넣으면?
 
@@ -78,22 +82,7 @@ Java의 HikariCP, Go의 `database/sql`, Node의 `pg.Pool`도 구조는 같다. �
 
 한 문장으로 줄이면 이렇다. **앱 수명 객체는 생성자로, 요청 수명 값은 런타임 context로, 커넥션은 호출 한 번 동안만 빌린다.**
 
-```mermaid
-sequenceDiagram
-    participant App as 앱 시작/종료
-    participant Agent as 에이전트 (툴 포함)
-    participant Pool as DB 풀
-    participant Req as 요청
-
-    App->>Pool: 풀 1개 생성
-    App->>Agent: 툴 생성 시 풀 주입 (1회)
-    Req->>Agent: 실행 + context(사용자, 출력 경로)
-    Note over Agent: LLM 추론 중 (커넥션 점유 없음)
-    Agent->>Pool: 툴 호출 → 커넥션 빌림
-    Pool-->>Agent: 쿼리 결과, 커넥션 반납
-    Note over Agent: LLM 추론 중 (커넥션 점유 없음)
-    App->>Pool: 앱 종료 시 풀 정리
-```
+{% include figure image_path="/assets/images/posts/2026-10-26-agent-di-lifetime.png" alt="시간축 위에 세 가지 수명을 겹쳐 그린 그림. 앱 수명인 DB 풀, 툴, 에이전트는 앱 시작부터 종료까지 이어지고 생성자로 주입한다. 요청 A, B, C는 각각 짧은 구간이며 런타임 context로 넘긴다. 커넥션은 각 요청 안의 짧은 툴 호출 구간에만 빌리고 반납한다." caption="수명이 길수록 바깥에서 한 번, 짧을수록 실행 시점에 가깝게 넣는다." %}
 
 ### 툴: 공유 자원은 필드로, 요청별 값은 context에서
 
@@ -120,6 +109,8 @@ class SqlToolkit:
 ```
 
 여기서 중요한 건 **LLM에게 보이는 입력 스키마**다. 툴의 시그니처는 곧 모델이 채워야 할 인자 목록이 된다. DB 클라이언트나 요청 context가 시그니처에 섞이면 모델이 그 값을 채우려 하거나 스키마가 지저분해진다. 위 구조에서는 DB가 `self`에 들어가 있고, `runtime` 인자는 프레임워크가 스키마에서 자동으로 제외한다. 그래서 **모델은 `sql` 하나만 채우면 된다.**
+
+{% include figure image_path="/assets/images/posts/2026-10-26-agent-di-schema.png" alt="왼쪽: LLM에게 노출되는 run_sql 스키마에는 sql 문자열 인자 하나만 있다. 오른쪽: 실행 시점에 툴은 모델이 채운 sql, 생성자로 주입된 self.db, 프레임워크가 주입한 runtime.context 세 가지를 갖고 있다." caption="모델에게 보이는 인자와 툴이 실제로 쓰는 값은 다르다. 모델이 채울 필요가 없는 값은 스키마 밖으로 뺀다." %}
 
 같은 장치는 다른 프레임워크에도 있다. OpenAI Agents SDK의 `RunContextWrapper`, Pydantic AI의 `RunContext`(`deps`)가 같은 역할을 한다. 이름은 달라도 "실행할 때 넘긴 값을 툴이 받되, 모델에게는 보이지 않게" 한다는 점은 같다.
 
